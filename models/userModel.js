@@ -22,16 +22,50 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  tutorials: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tutorial',
-    },
-  ],
+  full_name: {
+    type: String,
+    
+  },
+
+  id_card_number: {
+    type: String,
+    
+  },
+  hometown: {
+    type: String,
+    
+  },
+  date_of_birth: {
+    type: Date,
+    
+  },
+  gender: {
+    type: Boolean,
+    
+  },
+  rental_date: {
+    type: Date,
+  },
+
+  type: {
+    type: Boolean,
+    
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
   },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+
+  telephone_number: {
+    type: String,
+
+  }
 })
 
 module.exports = mongoose.model('User', userSchema)
