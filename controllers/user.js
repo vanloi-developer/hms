@@ -85,10 +85,64 @@ const login = async (req, res, next) => {
   }
 };
 
-const getAll = async (req, res, next) => {
+export function getAll(req, res) {
+
   const user = await User.find({});
 
   res.status(201).json({ success: true, user });
 };
 
-module.exports = { signUp, login, getAll };
+export function get(req, res) {
+  const id = req.params.id;
+  User.findById(id)
+    .then((user) => {
+      res.status(200).json({
+        success: true,
+        user: user,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "This user does not exist",
+        error: err.message,
+      });
+    });
+}
+
+export function update(req, res) {
+  const id = req.params.id;
+  const updateObject = req.body;
+  User.update({ _id: id }, { $set: updateObject })
+    .exec()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: "User is updated",
+        user: updateObject,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error. Please try again.",
+      });
+    });
+}
+
+export function remove(req, res) {
+  const id = req.params.id;
+  User.findByIdAndRemove(id)
+    .exec()
+    .then(() =>
+      res.status(204).json({
+        success: true,
+      })
+    )
+    .catch((err) =>
+      res.status(500).json({
+        success: false,
+      })
+    );
+}
+module.exports = { signUp, login, getAll, get, update, remove };

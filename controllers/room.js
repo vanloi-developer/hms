@@ -2,7 +2,8 @@ const Room = require("../models/roomModel");
 
 const CustomError = require("../models/CustomError");
 
-const create = async (req, res, next) => {
+export function create(req, res) {
+
   try {
     const room = new Room({
       ...req.body,
@@ -16,10 +17,65 @@ const create = async (req, res, next) => {
   }
 };
 
-const getAll = async (req, res, next) => {
+export function getAll(req, res) {
+
   const room = await Room.find({});
 
   res.status(201).json({ success: true, room });
 };
 
-module.exports = { create, getAll };
+export function get(req, res) {
+  const id = req.params.id;
+  Room.findById(id)
+    .then((room) => {
+      res.status(200).json({
+        success: true,
+        room: room,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "This room does not exist",
+        error: err.message,
+      });
+    });
+}
+
+export function update(req, res) {
+  const id = req.params.id;
+  const updateObject = req.body;
+  Room.update({ _id: id }, { $set: updateObject })
+    .exec()
+    .then(() => {
+      res.status(200).json({
+        success: true,
+        message: "Room is updated",
+        room: updateObject,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error. Please try again.",
+      });
+    });
+}
+
+export function remove(req, res) {
+  const id = req.params.id;
+  Room.findByIdAndRemove(id)
+    .exec()
+    .then(() =>
+      res.status(204).json({
+        success: true,
+      })
+    )
+    .catch((err) =>
+      res.status(500).json({
+        success: false,
+      })
+    );
+}
+
+module.exports = { create, getAll, get, update, remove };

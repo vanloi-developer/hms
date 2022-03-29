@@ -14,4 +14,10 @@ router.get(
   roomController.getAll
 );
 
+router.get("/:id", roomController.get);
+
+router.put("/:id", roomController.update);
+
+router.delete("/:id", roomController.remove);
+
 module.exports = router;
