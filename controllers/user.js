@@ -14,7 +14,20 @@ async function signUp(req, res, next) {
     });
   }
 
-  const { username, email, password } = req.body;
+  const {
+    username,
+    email,
+    password,
+    id_card_number,
+    date_of_birth,
+    hometown,
+    gender,
+    telephone_number,
+    rental_date,
+    type,
+    full_name
+  } = req.body;
+
   try {
     let user = await User.findOne({ email });
     if (user) {
@@ -36,7 +49,15 @@ async function signUp(req, res, next) {
       username,
       email,
       password,
+      id_card_number,
+      hometown,
+      gender,
+      telephone_number,
+      type,
+      full_name,
     });
+
+    console.log(user);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

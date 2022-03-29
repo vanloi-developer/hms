@@ -24,24 +24,23 @@ const userSchema = new mongoose.Schema({
 
   full_name: {
     type: String,
-    
+    required: true,
   },
 
   id_card_number: {
     type: String,
-    
+    required: false,
   },
   hometown: {
     type: String,
-    
+    required: false,
   },
   date_of_birth: {
     type: Date,
-    
   },
   gender: {
     type: Boolean,
-    
+    required: false,
   },
   rental_date: {
     type: Date,
@@ -49,7 +48,7 @@ const userSchema = new mongoose.Schema({
 
   type: {
     type: Boolean,
-    
+    required: false,
   },
 
   createdAt: {
