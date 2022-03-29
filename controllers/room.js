@@ -2,7 +2,7 @@ const Room = require("../models/roomModel");
 
 const CustomError = require("../models/CustomError");
 
-export function create(req, res) {
+async function create(req, res) {
 
   try {
     const room = new Room({
@@ -17,14 +17,14 @@ export function create(req, res) {
   }
 };
 
-export function getAll(req, res) {
+async function getAll(req, res) {
 
   const room = await Room.find({});
 
   res.status(201).json({ success: true, room });
 };
 
-export function get(req, res) {
+async  function get(req, res) {
   const id = req.params.id;
   Room.findById(id)
     .then((room) => {
@@ -42,7 +42,7 @@ export function get(req, res) {
     });
 }
 
-export function update(req, res) {
+async function update(req, res) {
   const id = req.params.id;
   const updateObject = req.body;
   Room.update({ _id: id }, { $set: updateObject })
@@ -62,7 +62,7 @@ export function update(req, res) {
     });
 }
 
-export function remove(req, res) {
+async function remove(req, res) {
   const id = req.params.id;
   Room.findByIdAndRemove(id)
     .exec()

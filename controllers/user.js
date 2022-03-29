@@ -5,7 +5,7 @@ const { validationResult } = require("express-validator");
 const { createToken } = require("../utils/jwt");
 const CustomError = require("../models/CustomError");
 
-const signUp = async (req, res, next) => {
+async function signUp(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -49,9 +49,9 @@ const signUp = async (req, res, next) => {
   } catch (err) {
     next(new CustomError("Something went wrong", 500));
   }
-};
+}
 
-const login = async (req, res, next) => {
+async function login(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -78,21 +78,20 @@ const login = async (req, res, next) => {
     await user.save();
     res
       .header("Authorization", accessToken)
-      .send({ success: true, accessToken, user });
+      .send({ success: true, accessToken, user, role: "admin" });
   } catch (err) {
     console.log(err);
     next(new CustomError("Something went wrong", 500));
   }
-};
+}
 
-export function getAll(req, res) {
-
+async function getAll(req, res) {
   const user = await User.find({});
 
   res.status(201).json({ success: true, user });
-};
+}
 
-export function get(req, res) {
+async function get(req, res) {
   const id = req.params.id;
   User.findById(id)
     .then((user) => {
@@ -110,7 +109,7 @@ export function get(req, res) {
     });
 }
 
-export function update(req, res) {
+async function update(req, res) {
   const id = req.params.id;
   const updateObject = req.body;
   User.update({ _id: id }, { $set: updateObject })
@@ -130,7 +129,7 @@ export function update(req, res) {
     });
 }
 
-export function remove(req, res) {
+async function remove(req, res) {
   const id = req.params.id;
   User.findByIdAndRemove(id)
     .exec()
@@ -145,4 +144,5 @@ export function remove(req, res) {
       })
     );
 }
-module.exports = { signUp, login, getAll, get, update, remove };
+
+module.exports = { signUp, login, update, remove, get, getAll };

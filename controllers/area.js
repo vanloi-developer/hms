@@ -2,8 +2,7 @@ const Area = require("../models/areaModel");
 
 const CustomError = require("../models/CustomError");
 
-export function create(req, res) {
-
+async function create(req, res) {
   try {
     const area = new Area({
       ...req.body,
@@ -15,17 +14,15 @@ export function create(req, res) {
   } catch (err) {
     next(new CustomError("Something went wrong", 500));
   }
-};
+}
 
-export function getAll(req, res) {
-
+async function getAll(req, res) {
   const area = await Area.find();
 
   res.status(201).json({ success: true, area });
-};
+}
 
-
-export function get(req, res) {
+async function get(req, res) {
   const id = req.params.id;
   Area.findById(id)
     .then((role) => {
@@ -43,7 +40,7 @@ export function get(req, res) {
     });
 }
 
-export function update(req, res) {
+async function update(req, res) {
   const id = req.params.id;
   const updateObject = req.body;
   Area.update({ _id: id }, { $set: updateObject })
@@ -63,7 +60,7 @@ export function update(req, res) {
     });
 }
 
-export function remove(req, res) {
+async function remove(req, res) {
   const id = req.params.id;
   Area.findByIdAndRemove(id)
     .exec()
@@ -80,4 +77,3 @@ export function remove(req, res) {
 }
 
 module.exports = { create, getAll, get, update, remove };
-

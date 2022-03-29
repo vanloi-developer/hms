@@ -2,8 +2,7 @@ const Role = require("../models/roleModel");
 
 const CustomError = require("../models/CustomError");
 
-export function create(req, res) {
-
+async function create(req, res) {
   const { role_name, active } = req.body;
 
   try {
@@ -20,14 +19,13 @@ export function create(req, res) {
   } catch (err) {
     next(new CustomError("Something went wrong", 500));
   }
-};
-export function getAll(req, res) {
-  const response =  await Role.find();
+}
+async function getAll(req, res) {
+  const response = await Role.find();
   res.status(201).json({ success: true, response });
-};
+}
 
-
-export function get(req, res) {
+async function get(req, res) {
   const id = req.params.id;
   Role.findById(id)
     .then((role) => {
@@ -45,7 +43,7 @@ export function get(req, res) {
     });
 }
 
-export function update(req, res) {
+async function update(req, res) {
   const id = req.params.id;
   const updateObject = req.body;
   Role.update({ _id: id }, { $set: updateObject })
@@ -65,7 +63,7 @@ export function update(req, res) {
     });
 }
 
-export function remove(req, res) {
+async function remove(req, res) {
   const id = req.params.id;
   Role.findByIdAndRemove(id)
     .exec()
@@ -82,4 +80,3 @@ export function remove(req, res) {
 }
 
 module.exports = { create, getAll, get, update, remove };
-
