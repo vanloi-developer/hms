@@ -5,7 +5,7 @@ const { validationResult } = require("express-validator");
 const { createToken } = require("../utils/jwt");
 const CustomError = require("../models/CustomError");
 
-async function signUp(req, res) {
+async function signUp(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
